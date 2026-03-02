@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.863807Z",
+    "session_id": "S05",
+    "turn": 1,
+    "explanation_mode": "simulation",
+    "user_input": "If I reduced my BMI from 38.5 to 30, how would that affect my diabetes risk?",
+    "assistant_response": "Based on your health profile, the model has identified an elevated risk pattern. Key factors include elevated glucose, BMI, and blood pressure readings. Lifestyle modifications such as dietary changes and regular physical activity are the most evidence-supported approaches to reduce these risks.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

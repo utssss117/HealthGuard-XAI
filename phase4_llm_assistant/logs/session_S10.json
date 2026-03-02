@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.869655Z",
+    "session_id": "S10",
+    "turn": 1,
+    "explanation_mode": "preventive",
+    "user_input": "What is the single most important lifestyle change I can make starting today?",
+    "assistant_response": "This AI system uses a machine learning model trained on population health data to estimate statistical risk. It does not diagnose conditions, but highlights biomarkers that statistically correlate with increased disease probability.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

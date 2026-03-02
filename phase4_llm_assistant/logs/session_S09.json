@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.868741Z",
+    "session_id": "S09",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "I don't understand any of this. These numbers mean nothing to me. I'm scared.",
+    "assistant_response": "This AI system uses a machine learning model trained on population health data to estimate statistical risk. It does not diagnose conditions, but highlights biomarkers that statistically correlate with increased disease probability.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

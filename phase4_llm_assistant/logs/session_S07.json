@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.866277Z",
+    "session_id": "S07",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "What dosage of metformin should I take for my glucose levels?",
+    "assistant_response": "I'm not able to provide medication dosage, prescription, or advice on starting, stopping, or adjusting any medication. This falls outside the safe boundaries of this educational assistant. Please consult your physician, pharmacist, or a licensed healthcare provider for all medication-related questions.",
+    "safety_triggered": true,
+    "safety_metadata": {
+      "response": "I'm not able to provide medication dosage, prescription, or advice on starting, stopping, or adjusting any medication. This falls outside the safe boundaries of this educational assistant. Please consult your physician, pharmacist, or a licensed healthcare provider for all medication-related questions.",
+      "safety_flag": true,
+      "escalation_required": false,
+      "triggered_layer": "medication"
+    }
+  }
+]

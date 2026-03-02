@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.859489Z",
+    "session_id": "S01",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "Can you explain my overall health risk in simple terms?",
+    "assistant_response": "Based on your health profile, the model has identified an elevated risk pattern. Key factors include elevated glucose, BMI, and blood pressure readings. Lifestyle modifications such as dietary changes and regular physical activity are the most evidence-supported approaches to reduce these risks.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

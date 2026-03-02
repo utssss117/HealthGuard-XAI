@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.860766Z",
+    "session_id": "S02",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "What exactly should I be eating to help with my glucose levels?",
+    "assistant_response": "Your top recommendation focuses on reducing dietary glycemic load and increasing physical activity to 150 minutes per week. These changes have demonstrated significant risk reduction in peer-reviewed studies.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

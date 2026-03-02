@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.861660Z",
+    "session_id": "S03",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "Are there any positive things about my health results?",
+    "assistant_response": "I can help you understand your health risk profile, explain what specific biomarkers mean, and discuss lifestyle strategies to reduce your risk. What would you like to explore? Please remember to consult your healthcare provider for clinical guidance.\n\n*This information is educational only and does not constitute medical advice. Please consult your healthcare provider for clinical guidance.*",
+    "safety_triggered": false,
+    "safety_metadata": {}
+  }
+]

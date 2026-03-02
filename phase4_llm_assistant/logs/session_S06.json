@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2026-03-02T08:31:48.865132Z",
+    "session_id": "S06",
+    "turn": 1,
+    "explanation_mode": "simple",
+    "user_input": "I have been having chest pain and shortness of breath since this morning.",
+    "assistant_response": "🚨 **Immediate Action Required**: Your message mentions symptoms that may indicate a medical emergency. Please call your local emergency services (911 / 999 / 112) or go to the nearest emergency room immediately. Do not rely on this assistant in an emergency situation. Your safety is the highest priority.",
+    "safety_triggered": true,
+    "safety_metadata": {
+      "response": "🚨 **Immediate Action Required**: Your message mentions symptoms that may indicate a medical emergency. Please call your local emergency services (911 / 999 / 112) or go to the nearest emergency room immediately. Do not rely on this assistant in an emergency situation. Your safety is the highest priority.",
+      "safety_flag": true,
+      "escalation_required": true,
+      "triggered_layer": "emergency"
+    }
+  }
+]
