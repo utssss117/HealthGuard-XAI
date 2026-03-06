@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthGuard XAI — AI Health Risk Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Header ───────────────────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">⚕</div>
+      <div>
+        <span class="logo-title">HealthGuard <span class="logo-xai">XAI</span></span>
+        <span class="logo-sub">AI-Powered Risk Intelligence</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-tab="predict">Predict</button>
+      <button class="nav-btn" data-tab="chat">AI Assistant</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Predict Tab ─────────────────────────────────────────────────────── -->
+<main id="tab-predict" class="tab active">
+  <div class="container">
+
+    <!-- Input Form -->
+    <section class="card form-card">
+      <h2 class="card-title">Patient Biomarkers</h2>
+      <p class="card-sub">Enter clinical measurements to generate a risk assessment</p>
+      <form id="predict-form" class="form-grid">
+        <div class="field">
+          <label>Pregnancies</label>
+          <input type="number" id="Pregnancies" value="2" min="0" max="20" step="1" />
+        </div>
+        <div class="field">
+          <label>Glucose (mg/dL)</label>
+          <input type="number" id="Glucose" value="138" min="0" max="300" />
+        </div>
+        <div class="field">
+          <label>Blood Pressure (mmHg)</label>
+          <input type="number" id="BloodPressure" value="72" min="0" max="200" />
+        </div>
+        <div class="field">
+          <label>Skin Thickness (mm)</label>
+          <input type="number" id="SkinThickness" value="35" min="0" max="100" />
+        </div>
+        <div class="field">
+          <label>Insulin (IU/mL)</label>
+          <input type="number" id="Insulin" value="0" min="0" max="900" />
+        </div>
+        <div class="field">
+          <label>BMI</label>
+          <input type="number" id="BMI" value="33.6" min="0" max="70" step="0.1" />
+        </div>
+        <div class="field">
+          <label>Diabetes Pedigree</label>
+          <input type="number" id="DiabetesPedigreeFunction" value="0.627" min="0" max="3" step="0.001" />
+        </div>
+        <div class="field">
+          <label>Age</label>
+          <input type="number" id="Age" value="50" min="1" max="120" />
+        </div>
+        <div class="field field-full">
+          <button type="submit" class="btn-primary" id="analyze-btn">
+            <span class="btn-icon">🔬</span> Analyze Risk
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Results -->
+    <div id="results-section" class="results hidden">
+
+      <!-- Risk Gauge -->
+      <section class="card gauge-card">
+        <h2 class="card-title">Risk Assessment</h2>
+        <div class="gauge-container">
+          <div class="gauge-wrap">
+            <svg viewBox="0 0 200 110" class="gauge-svg">
+              <defs>
+                <linearGradient id="gauge-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#22c55e"/>
+                  <stop offset="50%"  stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#ef4444"/>
+                </linearGradient>
+              </defs>
+              <!-- Track -->
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#1e293b" stroke-width="18" stroke-linecap="round"/>
+              <!-- Filled arc -->
+              <path id="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gauge-grad)" stroke-width="18" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
+              <!-- Needle -->
+              <line id="gauge-needle" x1="100" y1="100" x2="100" y2="30" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" transform="rotate(0, 100, 100)"/>
+              <circle cx="100" cy="100" r="6" fill="#f8fafc"/>
+            </svg>
+            <div id="gauge-pct" class="gauge-pct">0%</div>
+          </div>
+          <div class="gauge-labels">
+            <span class="label-low">Low</span>
+            <span class="label-med">Medium</span>
+            <span class="label-high">High</span>
+          </div>
+        </div>
+        <div id="risk-badge" class="risk-badge">—</div>
+      </section>
+
+      <!-- Feature Importance Chart -->
+      <section class="card chart-card">
+        <h2 class="card-title">Feature Importance</h2>
+        <p class="card-sub">Contribution of each biomarker to the risk score</p>
+        <div id="feature-chart" class="feature-chart"></div>
+      </section>
+
+      <!-- Recommendations -->
+      <section class="card recs-card" id="recs-card">
+        <h2 class="card-title">Recommendations</h2>
+        <p class="card-sub">Personalized lifestyle guidance based on your risk profile</p>
+        <div id="recs-list" class="recs-list">
+          <div class="loader">Generating recommendations…</div>
+        </div>
+      </section>
+
+    </div><!-- /results-section -->
+  </div>
+</main>
+
+<!-- ── Chat Tab ─────────────────────────────────────────────────────────── -->
+<main id="tab-chat" class="tab hidden">
+  <div class="container container-chat">
+    <section class="card chat-card">
+      <div class="chat-header">
+        <div class="chat-avatar">🤖</div>
+        <div>
+          <div class="chat-title">AI Health Assistant</div>
+          <div class="chat-status"><span class="dot"></span>Powered by Groq llama-3.1-8b</div>
+        </div>
+      </div>
+      <div id="chat-messages" class="chat-messages">
+        <div class="msg bot">
+          <div class="msg-bubble">
+            Hello! I'm your HealthGuard AI assistant. Run a risk analysis first and then ask me anything about your results, lifestyle changes, or what your biomarkers mean. <br/><br/>
+            <em>Disclaimer: This assistant provides educational information only and does not replace professional medical advice.</em>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask about your health risk…" autocomplete="off" />
+        <button id="chat-send" class="btn-send">➤</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Loading overlay -->
+<div id="loader-overlay" class="loader-overlay hidden">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <span id="loader-text">Analyzing…</span>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
