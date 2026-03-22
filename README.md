@@ -1,49 +1,37 @@
-# HealthGuard-XAI ⚕️
+# HealthGuard-XAI 🛡️
 
-An AI-driven Health Dashboard and Risk Diagnostic Engine.
+An AI-driven Health Dashboard and Risk Diagnostic Engine, built cleanly in pure Python using Streamlit!
 
-## 🚀 How to Run
+🌍 **Live Application:** [https://healthguard-xai-ht2rajyhy4app2wnym3cxtx.streamlit.app/](https://healthguard-xai-ht2rajyhy4app2wnym3cxtx.streamlit.app/)
 
-To run the full application, you need to start both the **Backend API** and the **Frontend Dashboard**.
+## ✨ Features
+- **Machine Learning Risk Prediction**: Uses advanced modeling to probabilistically estimate disease risk.
+- **Explainable AI (SHAP)**: Understand exactly which biomarkers are driving your specific risk up or down natively mapped.
+- **AI Health Assistant**: Interactive chat layer powered by Groq's high-speed inference.
+- **Hybrid Recommendation Engine**: Delivers a fully-personalized lifestyle plan merging clinical rules with LLM synthesis.
 
-### 1. Backend (FastAPI + Python)
-The backend handles AI risk modeling, clinical synchronization, and patient chat.
+## 🚀 How to Run Locally
 
-1.  **Activate Virtual Environment** (Recommended):
+Because the entire architecture was transitioned to a unified Streamlit build, running it is incredibly simple:
+
+1. **Activate Virtual Environment** (Recommended):
     ```powershell
     # Windows
     .\.venv\Scripts\activate
     ```
-2.  **Install Dependencies**:
+2. **Install Dependencies**:
     ```bash
     pip install -r requirements.txt
     ```
-3.  **Start the Server**:
+3. **Start the Dashboard**:
     ```bash
-    python -m uvicorn api.main:app --reload
+    streamlit run app.py
     ```
-    *Access API documentation at: [http://localhost:8000/docs](http://localhost:8000/docs)*
 
-### 2. Frontend (Next.js + React)
-The frontend provides the "dashing" UI and Clerk-protected dashboard.
-
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-2.  **Start the Dev Server**:
-    ```bash
-    npm run dev
-    ```
-    *Access the dashboard at: [http://localhost:3000](http://localhost:3000)*
+*Access the dashboard at: [http://localhost:8501](http://localhost:8501)*
 
 ## 🔐 Configuration
-Ensure your `.env.local` contains valid **Clerk API Keys**:
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-- `CLERK_SECRET_KEY`
+To enable the **AI Assistant** and **Personalized Recommendations** tabs, you must supply a Groq API Key:
 
-## ✨ Features
-- **Explainable AI Integration**: Understand the biomarkers driving every risk.
-- **Dashing UI**: Modern dark theme with medical-grade visualizations.
-- **Clerk Auth**: Secure, branded sign-in and sign-up flows.
-- **AI Health Assistant**: Interactive chat powered by Groq Llama-3.1.
+- Create a `.env` file or export it directly into your terminal: `GROQ_API_KEY="gsk_your_key_here"`
+- On Streamlit Community Cloud, provide this inside the **App Settings > Secrets** panel!
