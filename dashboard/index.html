@@ -6,6 +6,7 @@
   <title>HealthGuard XAI — AI Health Risk Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -20,10 +21,16 @@
         <span class="logo-sub">AI-Powered Risk Intelligence</span>
       </div>
     </div>
-    <nav class="nav">
-      <button class="nav-btn active" data-tab="predict">Predict</button>
-      <button class="nav-btn" data-tab="chat">AI Assistant</button>
-    </nav>
+    <div class="header-right" style="display:flex; align-items:center; gap:16px;">
+      <nav class="nav">
+        <button class="nav-btn active" data-target="predict">Predict</button>
+        <button class="nav-btn" data-target="chat">AI Assistant</button>
+      </nav>
+      <div id="user-profile" style="display:flex; align-items:center; gap:12px; border-left:1px solid rgba(255,255,255,0.1); padding-left:16px;">
+        <span id="user-name" style="font-size:0.9rem; color:#f8fafc; font-weight:500;"></span>
+        <button onclick="logout()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:#f8fafc; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem; transition:all 0.2s;">Logout</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -118,6 +125,15 @@
         <div id="feature-chart" class="feature-chart"></div>
       </section>
 
+      <!-- Patient Health Graph -->
+      <section class="card radar-card">
+        <h2 class="card-title">Patient Health Profile</h2>
+        <p class="card-sub">Your biomarkers compared against healthy baselines</p>
+        <div class="radar-container">
+          <canvas id="healthRadar"></canvas>
+        </div>
+      </section>
+
       <!-- Recommendations -->
       <section class="card recs-card" id="recs-card">
         <h2 class="card-title">Recommendations</h2>
@@ -166,6 +182,7 @@
   </div>
 </div>
 
+<script src="auth.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

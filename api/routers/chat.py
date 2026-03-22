@@ -7,16 +7,17 @@ Routes user queries through the Phase 4 safety filter + Groq LLM.
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from api.schemas import ChatRequest, ChatResponse
 from health_llm_assistant.assistant import ask
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/chat", tags=["LLM Health Assistant"])
 
 
 @router.post("", response_model=ChatResponse)
-def chat(body: ChatRequest) -> ChatResponse:
+def chat(body: ChatRequest, current_user=Depends(get_current_user)) -> ChatResponse:
     """
     Send a health-related question to the AI assistant.
 

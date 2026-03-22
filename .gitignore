@@ -28,3 +28,20 @@ data/
 # IDE
 .vscode/
 .idea/
+
+# clerk configuration (can include secrets)
+/.clerk/
+
+# Node/Next.js
+node_modules/
+.next/
+
+# Databases
+*.db
+*.sqlite
+
+# Local Env Files
+.env.local
+.env.*.local
+tmp_*.py
+debug_*.py

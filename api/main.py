@@ -24,7 +24,8 @@ from fastapi.responses import FileResponse
 import os
 
 from api.dependencies import load_model_and_scaler
-from api.routers import predict, explain, recommend, chat
+from api.routers import predict, explain, recommend, chat, auth_router
+from api.database import init_db
 
 
 # ── Startup lifespan (pre-load model + scaler) ────────────────────────────────
@@ -33,6 +34,8 @@ from api.routers import predict, explain, recommend, chat
 async def lifespan(app: FastAPI):
     print("HealthGuard-XAI API starting up — loading model and scaler...")
     load_model_and_scaler()   # cache the model at startup
+    print("Initializing database...")
+    init_db()
     print("Model loaded successfully. API is ready.")
     yield
     print("HealthGuard-XAI API shutting down.")
@@ -68,6 +71,7 @@ if os.path.exists(DASHBOARD_DIR):
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 
+app.include_router(auth_router.router)
 app.include_router(predict.router)
 app.include_router(explain.router)
 app.include_router(recommend.router)

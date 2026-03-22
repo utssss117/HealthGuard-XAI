@@ -13,6 +13,7 @@ from fastapi import APIRouter, Depends
 
 from api.schemas import PatientBiomarkers, PredictResponse
 from api.dependencies import get_model, get_scaler, biomarkers_to_df
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/predict", tags=["Risk Prediction"])
 
@@ -22,6 +23,7 @@ def predict_risk(
     biomarkers: PatientBiomarkers,
     model=Depends(get_model),
     scaler=Depends(get_scaler),
+    current_user=Depends(get_current_user),
 ) -> PredictResponse:
     """
     Predict diabetes/cardiovascular risk probability from patient biomarkers.

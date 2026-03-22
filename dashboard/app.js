@@ -5,10 +5,20 @@
 
 const API = "http://localhost:8000";
 
+// ── Auth Check ─────────────────────────────────────────────────────────────
+if (typeof isAuthenticated !== "undefined" && !isAuthenticated()) {
+  window.location.href = "login.html";
+} else if (typeof getUser !== "undefined") {
+  const user = getUser();
+  if (user && document.getElementById("user-name")) {
+    document.getElementById("user-name").textContent = user.full_name;
+  }
+}
 // ── State ──────────────────────────────────────────────────────────────────
 let lastPrediction  = null;   // { risk_probability, risk_level, top_features }
 let lastBiomarkers  = null;   // raw form object
 let chatHistory     = [];
+let healthChart     = null;   // Chart.js instance
 
 // ── Tab Switching ──────────────────────────────────────────────────────────
 document.querySelectorAll(".nav-btn").forEach(btn => {
@@ -16,7 +26,8 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active") || t.classList.add("hidden"));
     btn.classList.add("active");
-    const tab = document.getElementById(`tab-${btn.dataset.tab}`);
+    const tabName = btn.dataset.tab || btn.dataset.target; // handle both attributes just in case
+    const tab = document.getElementById(`tab-${tabName}`);
     tab.classList.remove("hidden");
     tab.classList.add("active");
   });
@@ -30,8 +41,13 @@ document.getElementById("predict-form").addEventListener("submit", async e => {
 
   showLoader("Analyzing patient data…");
   try {
-    const r   = await fetch(`${API}/predict`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body) });
+    const r   = await fetch(`${API}/predict`, { 
+      method:"POST", 
+      headers:{ "Content-Type":"application/json", ...authHeaders() }, 
+      body:JSON.stringify(body) 
+    });
     const data = await r.json();
+    if (r.status === 401) { logout(); return; }
     if (!r.ok) throw new Error(data.detail || "Prediction failed");
 
     lastPrediction = data;
@@ -50,12 +66,13 @@ document.getElementById("predict-form").addEventListener("submit", async e => {
   finally { hideLoader(); }
 });
 
-// ── Render Risk Gauge ──────────────────────────────────────────────────────
+// ── Render Results ─────────────────────────────────────────────────────────
 function renderResults(data) {
   const pct = data.risk_probability;
   setGauge(pct);
   renderBadge(data.risk_level);
   renderFeatureChart(data.top_features);
+  renderHealthGraph(lastBiomarkers);
 }
 
 function setGauge(prob) {
@@ -111,6 +128,114 @@ function renderFeatureChart(features) {
   });
 }
 
+// ── Patient Health Radar Chart ─────────────────────────────────────────────
+function renderHealthGraph(biomarkers) {
+  if (!biomarkers) return;
+
+  const ctx = document.getElementById("healthRadar").getContext("2d");
+
+  // Destroy previous instance
+  if (healthChart) {
+    healthChart.destroy();
+  }
+
+  // Clinical Norms (approximate baselines for scaling)
+  // We want to scale everything so "100" is normal, making the radar chart readable.
+  const norms = {
+    Pregnancies: 1, 
+    Glucose: 100,
+    BloodPressure: 80,
+    SkinThickness: 20,
+    Insulin: 100,
+    BMI: 22,
+    DiabetesPedigreeFunction: 0.3,
+    Age: 40
+  };
+
+  const labels = Object.keys(biomarkers);
+  
+  // Calculate scaled data: (Actual / Normal) * 100
+  // e.g. Glucose 150 -> 150/100 * 100 = 150 (50% over baseline)
+  const actualData = labels.map(key => {
+    let norm = norms[key] || 1;
+    // Cap at 250% so a single insane outlier doesn't ruin the whole graph scale
+    return Math.min((biomarkers[key] / norm) * 100, 250); 
+  });
+
+  const baselineData = labels.map(() => 100); // Baseline is always 100 in this scaled view
+
+  healthChart = new Chart(ctx, {
+    type: "radar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Patient Values",
+          data: actualData,
+          backgroundColor: "rgba(239, 68, 68, 0.4)", // Var(--error) translucent
+          borderColor: "rgba(239, 68, 68, 1)",
+          pointBackgroundColor: "rgba(239, 68, 68, 1)",
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        },
+        {
+          label: "Healthy Baseline",
+          data: baselineData,
+          backgroundColor: "rgba(34, 197, 94, 0.2)", // Var(--success) translucent
+          borderColor: "rgba(34, 197, 94, 0.8)",
+          pointBackgroundColor: "rgba(34, 197, 94, 1)",
+          borderWidth: 2,
+          borderDash: [5, 5],
+          pointRadius: 0, // hide points on baseline
+          pointHoverRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: { color: "rgba(255, 255, 255, 0.1)" },
+          grid: { color: "rgba(255, 255, 255, 0.1)" },
+          pointLabels: {
+            color: "#94a3b8",
+            font: { family: "Inter", size: 10, weight: "500" }
+          },
+          ticks: {
+            display: false, // hide the 0, 50, 100 scale numbers to keep it clean
+            min: 0,
+            max: 200,
+            stepSize: 50
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: { color: "#f8fafc", font: { family: "Inter", size: 12 } },
+          position: "bottom"
+        },
+        tooltip: {
+          callbacks: {
+            // Unscale the value for the tooltip so it shows the actual metric (e.g. Glucose: 138)
+            label: function(context) {
+              const label = context.dataset.label || '';
+              const feature = context.chart.data.labels[context.dataIndex];
+              
+              if (label === "Healthy Baseline") {
+                return `Baseline: ${norms[feature]}`;
+              } else {
+                return `Patient: ${biomarkers[feature]}`;
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
 // ── Recommendations ────────────────────────────────────────────────────────
 async function loadRecommendations(biomarkers, riskProb) {
   const list = document.getElementById("recs-list");
@@ -126,8 +251,13 @@ async function loadRecommendations(biomarkers, riskProb) {
   };
 
   try {
-    const r    = await fetch(`${API}/recommend`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) });
+    const r    = await fetch(`${API}/recommend`, { 
+      method:"POST", 
+      headers:{ "Content-Type":"application/json", ...authHeaders() }, 
+      body:JSON.stringify(payload) 
+    });
     const data = await r.json();
+    if (r.status === 401) { logout(); return; }
     if (!r.ok) throw new Error(data.detail);
 
     list.innerHTML = "";
@@ -179,11 +309,12 @@ async function sendChat() {
   try {
     const r    = await fetch(`${API}/chat`, {
       method: "POST",
-      headers: { "Content-Type":"application/json" },
+      headers: { "Content-Type":"application/json", ...authHeaders() },
       body: JSON.stringify({ message:text, patient_data, history: chatHistory.slice(-6) }),
     });
     const data = await r.json();
     typingEl.remove();
+    if (r.status === 401) { logout(); return; }
 
     const reply = data.assistant_response || "Sorry, I couldn't process that.";
     appendMsg("bot", reply);

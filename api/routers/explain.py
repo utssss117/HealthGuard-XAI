@@ -14,6 +14,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from api.schemas import PatientBiomarkers, ExplainResponse
 from api.dependencies import get_model, get_scaler, biomarkers_to_df
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/explain", tags=["Explainability"])
 
@@ -28,6 +29,7 @@ def explain_prediction(
     biomarkers: PatientBiomarkers,
     model=Depends(get_model),
     scaler=Depends(get_scaler),
+    current_user=Depends(get_current_user),
 ) -> ExplainResponse:
     """
     Compute SHAP feature attributions for a single patient prediction.

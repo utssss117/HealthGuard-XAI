@@ -7,16 +7,17 @@ Calls the Phase 3 hybrid rule + LLM recommendation engine.
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from api.schemas import RecommendRequest, RecommendResponse
 from phase3_recommendation_engine.hybrid_recommender import generate_recommendations
+from api.auth import get_current_user
 
 router = APIRouter(prefix="/recommend", tags=["Recommendations"])
 
 
 @router.post("", response_model=RecommendResponse)
-def get_recommendations(body: RecommendRequest) -> RecommendResponse:
+def get_recommendations(body: RecommendRequest, current_user=Depends(get_current_user)) -> RecommendResponse:
     """
     Generate personalized lifestyle recommendations for a patient.
 

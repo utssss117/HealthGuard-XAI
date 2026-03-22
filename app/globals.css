@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hard Overrides for Clerk "Invisible" Text */
+.cl-headerTitle, 
+.cl-headerSubtitle, 
+.cl-formFieldLabel, 
+.cl-socialButtonsBlockButtonText, 
+.cl-dividerText,
+.cl-footerActionText {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.cl-formFieldInput {
+  color: #ffffff !important;
+  background-color: #0f172a !important;
+}
+
+.cl-identityPreviewText {
+  color: #ffffff !important;
+}
