@@ -34,7 +34,7 @@ export default function ChatAssistant({ authHeaders, patientData }: ChatAssistan
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders },
         body: JSON.stringify({

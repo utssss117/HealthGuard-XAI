@@ -3,7 +3,7 @@
  * Handle login, registration, and token management for HealthGuard-XAI
  */
 
-const AUTH_API = "http://localhost:8000/auth";
+const AUTH_API = "/api/auth";
 
 const TOKEN_KEY = "healthguard_jwt";
 const USER_KEY = "healthguard_user";

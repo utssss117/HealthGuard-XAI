@@ -18,7 +18,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, JWTError
 from clerk_backend_api import Clerk
 
-from api.database import get_db
+from backend.database import get_db
 
 # Load env variables including the new .env.local
 try:

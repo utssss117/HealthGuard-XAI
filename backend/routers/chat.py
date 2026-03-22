@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends
 
-from api.schemas import ChatRequest, ChatResponse
+from backend.schemas import ChatRequest, ChatResponse
 from health_llm_assistant.assistant import ask
-from api.auth import get_current_user
+from backend.auth import get_current_user
 
 router = APIRouter(prefix="/chat", tags=["LLM Health Assistant"])
 

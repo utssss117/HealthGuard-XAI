@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends
 
-from api.schemas import RecommendRequest, RecommendResponse
+from backend.schemas import RecommendRequest, RecommendResponse
 from phase3_recommendation_engine.hybrid_recommender import generate_recommendations
-from api.auth import get_current_user
+from backend.auth import get_current_user
 
 router = APIRouter(prefix="/recommend", tags=["Recommendations"])
 

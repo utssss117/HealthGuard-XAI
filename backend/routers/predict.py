@@ -11,9 +11,9 @@ from __future__ import annotations
 import numpy as np
 from fastapi import APIRouter, Depends
 
-from api.schemas import PatientBiomarkers, PredictResponse
-from api.dependencies import get_model, get_scaler, biomarkers_to_df
-from api.auth import get_current_user
+from backend.schemas import PatientBiomarkers, PredictResponse
+from backend.dependencies import get_model, get_scaler, biomarkers_to_df
+from backend.auth import get_current_user
 
 router = APIRouter(prefix="/predict", tags=["Risk Prediction"])
 

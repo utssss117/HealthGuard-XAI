@@ -31,7 +31,7 @@ export default function DashboardClient({ authToken }: DashboardClientProps) {
     if (!mounted) return;
     const sync = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/auth/me", {
+        const res = await fetch("/api/auth/me", {
           headers: authHeaders
         });
         if (res.ok) {
@@ -52,7 +52,7 @@ export default function DashboardClient({ authToken }: DashboardClientProps) {
     setBiomarkers(data);
     
     try {
-      const res = await fetch("http://127.0.0.1:8000/predict", {
+      const res = await fetch("/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders },
         body: JSON.stringify(data),

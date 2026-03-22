@@ -3,7 +3,7 @@
    Connects to FastAPI backend at http://localhost:8000
 ────────────────────────────────────────────────────────────────────────── */
 
-const API = "http://localhost:8000";
+const API = "/api";
 
 // ── Auth Check ─────────────────────────────────────────────────────────────
 if (typeof isAuthenticated !== "undefined" && !isAuthenticated()) {

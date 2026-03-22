@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from typing import Optional
 
-from api.auth import get_current_user
+from backend.auth import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

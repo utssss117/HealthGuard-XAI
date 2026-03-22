@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.schemas import PatientBiomarkers, ExplainResponse
-from api.dependencies import get_model, get_scaler, biomarkers_to_df
-from api.auth import get_current_user
+from backend.schemas import PatientBiomarkers, ExplainResponse
+from backend.dependencies import get_model, get_scaler, biomarkers_to_df
+from backend.auth import get_current_user
 
 router = APIRouter(prefix="/explain", tags=["Explainability"])
 

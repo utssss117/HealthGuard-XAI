@@ -30,7 +30,7 @@ export default function Recommendations({ authHeaders, biomarkers, riskProbabili
       };
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/recommend", {
+        const res = await fetch("/api/recommend", {
           method: "POST",
           headers: { "Content-Type": "application/json", ...authHeaders },
           body: JSON.stringify(payload)

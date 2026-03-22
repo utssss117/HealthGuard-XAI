@@ -23,9 +23,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 
-from api.dependencies import load_model_and_scaler
-from api.routers import predict, explain, recommend, chat, auth_router
-from api.database import init_db
+from backend.dependencies import load_model_and_scaler
+from backend.routers import predict, explain, recommend, chat, auth_router
+from backend.database import init_db
 
 
 # ── Startup lifespan (pre-load model + scaler) ────────────────────────────────
@@ -71,11 +71,11 @@ if os.path.exists(DASHBOARD_DIR):
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 
-app.include_router(auth_router.router)
-app.include_router(predict.router)
-app.include_router(explain.router)
-app.include_router(recommend.router)
-app.include_router(chat.router)
+app.include_router(auth_router.router, prefix="/api")
+app.include_router(predict.router, prefix="/api")
+app.include_router(explain.router, prefix="/api")
+app.include_router(recommend.router, prefix="/api")
+app.include_router(chat.router, prefix="/api")
 
 
 # ── Health check ──────────────────────────────────────────────────────────────
