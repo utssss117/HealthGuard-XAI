@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 # Local imports
 try:
     from backend.dependencies import load_model_and_scaler, get_model, get_scaler, biomarkers_to_df
-    from health_llm_assistant.assistant import HealthLLMAssistant
+    from health_llm_assistant.assistant import ask as health_llm_ask
     from phase3_recommendation_engine.hybrid_recommender import HybridRecommender
 except ImportError as e:
     st.error(f"Import Error: {e}. Please ensure the python structure is correct.")
@@ -17,7 +17,7 @@ st.set_page_config(page_title="HealthGuard-XAI", page_icon="🛡️", layout="wi
 @st.cache_resource
 def init_system():
     load_model_and_scaler()
-    return get_model(), get_scaler(), HealthLLMAssistant(), HybridRecommender(get_model())
+    return get_model(), get_scaler(), None, HybridRecommender(get_model())
 
 try:
     model, scaler, llm_assistant, recommender = init_system()
@@ -146,9 +146,18 @@ with tab4:
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
-            try:
-                response = llm_assistant.chat(prompt)
-            except Exception as e:
-                response = f"LLM Error: {e}"
+            if st.session_state.patient_data is None:
+                response = "Please run a Risk Assessment first so I can understand your health context!"
+            else:
+                try:
+                    history = st.session_state.messages[:-1]
+                    resp_dict = health_llm_ask(
+                        user_input=prompt,
+                        patient_data=st.session_state.patient_data,
+                        conversation_history=history
+                    )
+                    response = resp_dict.get("assistant_response", str(resp_dict))
+                except Exception as e:
+                    response = f"LLM Error: {e}"
             st.markdown(response)
             st.session_state.messages.append({"role": "assistant", "content": response})
