@@ -54,14 +54,14 @@ with tab1:
         
     if st.button("Predict Risk", use_container_width=True):
         data = {
-            "pregnancies": pregnancies,
-            "glucose": glucose,
-            "blood_pressure": blood_pressure,
-            "skin_thickness": skin_thickness,
-            "insulin": insulin,
-            "bmi": bmi,
-            "diabetes_pedigree_function": dpf,
-            "age": age
+            "Pregnancies": pregnancies,
+            "Glucose": glucose,
+            "BloodPressure": blood_pressure,
+            "SkinThickness": skin_thickness,
+            "Insulin": insulin,
+            "BMI": bmi,
+            "DiabetesPedigreeFunction": dpf,
+            "Age": age
         }
         st.session_state.patient_data = data
         df = biomarkers_to_df(data)
