@@ -104,11 +104,22 @@ with tab2:
                 FEATURE_ORDER = ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age"]
                 X_scaled = pd.DataFrame(scaler.transform(df), columns=FEATURE_ORDER)
                 
-                explainer = shap.TreeExplainer(model)
-                shap_vals = explainer.shap_values(X_scaled)
-                if isinstance(shap_vals, list):
-                    shap_vals = shap_vals[1]
-                sv = shap_vals[0]
+                model_type = type(model).__name__
+                if "RandomForest" in model_type or "XGB" in model_type:
+                    explainer = shap.TreeExplainer(model)
+                    shap_vals = explainer.shap_values(X_scaled)
+                    if isinstance(shap_vals, list):
+                        shap_vals = shap_vals[1]
+                    sv = shap_vals[0]
+                elif "Logistic" in model_type or "Linear" in model_type:
+                    explainer = shap.LinearExplainer(model, X_scaled)
+                    shap_vals = explainer.shap_values(X_scaled)
+                    sv = shap_vals[0] if shap_vals.ndim == 2 else shap_vals
+                else:
+                    background = shap.sample(X_scaled, min(20, len(X_scaled)))
+                    explainer = shap.KernelExplainer(model.predict_proba, background)
+                    shap_vals = explainer.shap_values(X_scaled)
+                    sv = shap_vals[1][0] if isinstance(shap_vals, list) else shap_vals[0]
                 
                 import matplotlib.pyplot as plt
                 fig, ax = plt.subplots(figsize=(8, 4))
