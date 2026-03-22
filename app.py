@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 try:
     from backend.dependencies import load_model_and_scaler, get_model, get_scaler, biomarkers_to_df
     from health_llm_assistant.assistant import ask as health_llm_ask
-    from phase3_recommendation_engine.hybrid_recommender import HybridRecommender
+    from phase3_recommendation_engine.hybrid_recommender import generate_recommendations
 except ImportError as e:
     st.error(f"Import Error: {e}. Please ensure the python structure is correct.")
 
@@ -17,7 +17,7 @@ st.set_page_config(page_title="HealthGuard-XAI", page_icon="🛡️", layout="wi
 @st.cache_resource
 def init_system():
     load_model_and_scaler()
-    return get_model(), get_scaler(), None, HybridRecommender(get_model())
+    return get_model(), get_scaler(), None, None
 
 try:
     model, scaler, llm_assistant, recommender = init_system()
@@ -125,9 +125,21 @@ with tab3:
     st.header("Hybrid Recommendations")
     if st.session_state.patient_data is not None:
         if st.button("Generate Recommendations"):
-            with st.spinner("Synthesizing rules + LLM plan..."):
-                rec = recommender.generate_recommendations(st.session_state.patient_data)
-                st.write(rec)
+            if st.session_state.risk_prob is None:
+                st.error("Please run the Risk Assessment first!")
+            else:
+                with st.spinner("Synthesizing rules..."):
+                    try:
+                        rec = generate_recommendations(
+                            predicted_risks={"diabetes": st.session_state.risk_prob},
+                            top_positive_risk_factors=[],
+                            protective_factors=[],
+                            patient_profile=st.session_state.patient_data,
+                            use_llm=False
+                        )
+                        st.json(rec)
+                    except Exception as e:
+                        st.error(f"Engine Error: {e}")
     else:
         st.info("Please run a prediction first.")
 
