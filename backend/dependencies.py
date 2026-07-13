@@ -6,6 +6,7 @@ and injects them into route handlers via Depends().
 """
 
 from __future__ import annotations
+from fastapi import Header, HTTPException
 
 import os
 import pickle
@@ -50,3 +51,17 @@ def get_scaler():
 def biomarkers_to_df(biomarkers_dict: dict) -> pd.DataFrame:
     """Convert a biomarker dict to a properly ordered DataFrame."""
     return pd.DataFrame([biomarkers_dict])[_FEATURE_ORDER]
+
+
+async def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
+    """
+    Validate the incoming request API Key header.
+    Enforced only if HEALTHGUARD_API_KEY is configured in the environment.
+    """
+    expected_key = os.environ.get("HEALTHGUARD_API_KEY")
+    if expected_key:
+        if not x_api_key or x_api_key != expected_key:
+            raise HTTPException(
+                status_code=401,
+                detail="Authentication required: Invalid or missing API Key"
+            )

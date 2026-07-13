@@ -56,6 +56,9 @@ def predict_risk(
     # Sort descending
     top_features = dict(sorted(top_features.items(), key=lambda x: x[1], reverse=True))
 
+    from backend.logger import log_prediction_to_jsonl
+    log_prediction_to_jsonl(biomarkers.model_dump(), prob, risk_level)
+
     return PredictResponse(
         risk_probability=prob,
         risk_level=risk_level,

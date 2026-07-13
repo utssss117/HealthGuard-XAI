@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* ── Custom Theme System ───────────────────────────────── */
+:root {
+  --bg-primary: #030712;
+  --bg-secondary: #0b1129;
+  --card-bg: rgba(17, 24, 39, 0.6);
+  --card-border: rgba(255, 255, 255, 0.12); /* Increased contrast */
+  --card-hover: rgba(255, 255, 255, 0.15);
+  
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  --accent-green: #10b981;
+  --accent-rose: #f43f5e;
+  
+  --text-primary: #ffffff; /* pure white */
+  --text-secondary: #cbd5e1; /* slate-300 for clear legibility */
+  --text-muted: #94a3b8; /* slate-400 for high-contrast labels */
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 45%);
+  background-attachment: fixed;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* ── Custom Glassmorphism ─────────────────────────────── */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--card-hover);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Glowing Buttons ──────────────────────────────────── */
+.btn-premium {
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-premium:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.55);
+  opacity: 0.95;
+}
+
+.btn-premium:active {
+  transform: translateY(0);
+}
+
+/* ── Inputs ───────────────────────────────────────────── */
+.input-premium {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.18); /* highly visible borders */
+  color: #ffffff;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.input-premium:focus {
+  border-color: #60a5fa; /* bright sky blue */
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.input-premium::placeholder {
+  color: #64748b;
+}
+
+/* ── Scrollbars ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

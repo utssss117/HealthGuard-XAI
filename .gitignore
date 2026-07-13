@@ -13,11 +13,17 @@ build/
 env/
 venv/
 
-# Environment variables — NEVER commit this file
+# Environment variables — NEVER commit these files
 .env
+.env.local
+.env.*.local
 
-# Model outputs
-outputs/
+# Model outputs — allow models dir, ignore plots/metrics
+outputs/plots/
+outputs/metrics/
+# Allow trained model files needed for Vercel serverless deployment
+!outputs/models/
+!outputs/models/*.pkl
 
 # Data files
 data/
@@ -29,7 +35,7 @@ data/
 .vscode/
 .idea/
 
-# clerk configuration (can include secrets)
+# Clerk configuration (can include secrets)
 /.clerk/
 
 # Node/Next.js
@@ -40,8 +46,6 @@ node_modules/
 *.db
 *.sqlite
 
-# Local Env Files
-.env.local
-.env.*.local
+# Debug scripts
 tmp_*.py
 debug_*.py

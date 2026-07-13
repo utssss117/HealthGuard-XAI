@@ -13,7 +13,7 @@ import json
 import urllib.request
 from typing import Any, Dict
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwt, JWTError
 from clerk_backend_api import Clerk

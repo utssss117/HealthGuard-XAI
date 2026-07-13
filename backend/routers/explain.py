@@ -8,7 +8,7 @@ for a single patient instance.
 
 from __future__ import annotations
 
-import numpy as np
+import json
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -24,6 +24,29 @@ _FEATURE_ORDER = [
 ]
 
 
+
+
+_explain_cache = {}
+MAX_CACHE_SIZE = 500
+
+import os
+
+def get_background_data(scaler, n_samples=50):
+    try:
+        # explain.py is in backend/routers/ -> go up three levels to reach root
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        csv_path = os.path.join(base_dir, "data", "diabetes.csv")
+        if os.path.exists(csv_path):
+            df = pd.read_csv(csv_path)
+            if "Outcome" in df.columns:
+                df = df.drop(columns=["Outcome"])
+            df = df[_FEATURE_ORDER]
+            df_sampled = df.sample(n=min(n_samples, len(df)), random_state=42)
+            return pd.DataFrame(scaler.transform(df_sampled), columns=_FEATURE_ORDER)
+    except Exception:
+        pass
+    return None
+
 @router.post("", response_model=ExplainResponse)
 def explain_prediction(
     biomarkers: PatientBiomarkers,
@@ -36,6 +59,11 @@ def explain_prediction(
 
     Returns feature importances, top risk factors, and protective factors.
     """
+    # Simple in-memory cache lookup
+    cache_key = json.dumps(biomarkers.model_dump(), sort_keys=True)
+    if cache_key in _explain_cache:
+        return _explain_cache[cache_key]
+
     try:
         import shap
     except ImportError:
@@ -46,6 +74,7 @@ def explain_prediction(
 
     df = biomarkers_to_df(biomarkers.model_dump())
     X_scaled = pd.DataFrame(scaler.transform(df), columns=_FEATURE_ORDER)
+    bg = get_background_data(scaler)
 
     # Select appropriate SHAP explainer
     model_type = type(model).__name__
@@ -56,11 +85,11 @@ def explain_prediction(
             shap_vals = shap_vals[1]
         sv = shap_vals[0]
     elif "Logistic" in model_type or "Linear" in model_type:
-        explainer = shap.LinearExplainer(model, X_scaled)
+        explainer = shap.LinearExplainer(model, bg if bg is not None else X_scaled)
         shap_vals = explainer.shap_values(X_scaled)
         sv = shap_vals[0] if shap_vals.ndim == 2 else shap_vals
     else:
-        background = shap.sample(X_scaled, min(20, len(X_scaled)))
+        background = bg if bg is not None else shap.sample(X_scaled, min(20, len(X_scaled)))
         explainer = shap.KernelExplainer(model.predict_proba, background)
         shap_vals = explainer.shap_values(X_scaled)
         sv = shap_vals[1][0] if isinstance(shap_vals, list) else shap_vals[0]
@@ -74,8 +103,19 @@ def explain_prediction(
     protective     = [f"{f} ({v:.2f})" for f, v, s in contributions if s < 0][:5]
     risk_factors   = [f"{f} ({v:.2f})" for f, v, s in reversed(contributions) if s > 0][:5]
 
-    return ExplainResponse(
+    response = ExplainResponse(
         feature_importances=feature_importances,
         top_positive_risk_factors=risk_factors,
         protective_factors=protective,
     )
+
+    if len(_explain_cache) >= MAX_CACHE_SIZE:
+        # Simple FIFO eviction
+        try:
+            first_key = next(iter(_explain_cache))
+            _explain_cache.pop(first_key)
+        except Exception:
+            pass
+
+    _explain_cache[cache_key] = response
+    return response

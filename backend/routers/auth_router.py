@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from typing import Optional
+
 
 from backend.auth import get_current_user
 
