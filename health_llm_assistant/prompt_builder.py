@@ -34,13 +34,14 @@ Always end health-related responses with this exact disclaimer:
 """.format(disclaimer=_DISCLAIMER)
 
 
-def build_system_prompt(patient_data: Dict[str, Any]) -> str:
+def build_system_prompt(patient_data: Dict[str, Any], retrieved_context: str | None = None) -> str:
     """
-    Construct the full LLM system prompt incorporating structured patient data.
+    Construct the full LLM system prompt incorporating structured patient data and optional RAG context.
 
     Parameters
     ----------
-    patient_data : dict matching the standard Phase 4 input schema
+    patient_data      : dict matching the standard Phase 4 input schema
+    retrieved_context : Optional string containing matching clinical guidelines
 
     Returns
     -------
@@ -88,6 +89,15 @@ PROTECTIVE FACTORS:
 Use this profile to provide contextually relevant health guidance. 
 Do not repeat raw numbers mechanically — synthesize them into clear, 
 actionable insights.
+"""
+
+    if retrieved_context:
+        patient_context += f"""
+CLINICAL GUIDELINES REFERENCE (RAG Context):
+────────────────────────────────────────────────
+{retrieved_context}
+────────────────────────────────────────────────
+IMPORTANT: Ground your answers in the above clinical guidelines reference. Make sure to reference these specific guidelines (e.g., standard BMI thresholds or physical activity recommendations) when responding to the patient.
 """
 
     return _ASSISTANT_PERSONA + "\n" + patient_context

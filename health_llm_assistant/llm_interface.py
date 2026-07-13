@@ -15,6 +15,8 @@ from typing import Dict, List, Optional
 try:
     from dotenv import load_dotenv
     load_dotenv()  # Loads GROQ_API_KEY from .env automatically
+    # Also load from .env.local if present
+    load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env.local"), override=True)
 except ImportError:
     pass  # dotenv not installed; fall back to environment variable
 

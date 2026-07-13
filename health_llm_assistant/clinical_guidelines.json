@@ -1,0 +1,52 @@
+[
+  {
+    "id": "diabetes_diagnostics",
+    "title": "ADA Fasting Plasma Glucose (FPG) Thresholds",
+    "content": "According to the American Diabetes Association (ADA) guidelines, fasting plasma glucose levels are classified as: Normal: under 100 mg/dL (5.6 mmol/L). Prediabetes (Impaired Fasting Glucose): 100 mg/dL to 125 mg/dL (5.6 to 6.9 mmol/L). Diabetes mellitus: 126 mg/dL (7.0 mmol/L) or higher, which should be confirmed by repeat testing."
+  },
+  {
+    "id": "blood_pressure_categories",
+    "title": "AHA/ACC Blood Pressure Classifications",
+    "content": "The American Heart Association (AHA) and American College of Cardiology (ACC) define blood pressure categories in adults as: Normal blood pressure: Systolic under 120 and Diastolic under 80 mmHg. Elevated blood pressure: Systolic 120-129 and Diastolic under 80 mmHg. Stage 1 Hypertension (high blood pressure): Systolic 130-139 or Diastolic 80-89 mmHg. Stage 2 Hypertension (high blood pressure): Systolic 140 or higher, or Diastolic 90 mmHg or higher."
+  },
+  {
+    "id": "bmi_classifications",
+    "title": "WHO Body Mass Index (BMI) Categories",
+    "content": "The World Health Organization (WHO) classifies body weight for adults using Body Mass Index (BMI): Underweight: BMI less than 18.5. Normal weight: BMI 18.5 to 24.9. Overweight: BMI 25.0 to 29.9. Obese: BMI 30.0 or higher. Obesity is subdivided into Class 1 (30.0-34.9), Class 2 (35.0-39.9), and Class 3 (40.0+)."
+  },
+  {
+    "id": "cholesterol_standards",
+    "title": "NCEP Total Cholesterol Reference Levels",
+    "content": "National Cholesterol Education Program (NCEP) guidelines outline adult total blood cholesterol levels: Desirable: under 200 mg/dL (5.18 mmol/L). Borderline High: 200 to 239 mg/dL (5.18 to 6.18 mmol/L). High Blood Cholesterol: 240 mg/dL (6.21 mmol/L) or higher, associated with an elevated risk of developing coronary heart disease."
+  },
+  {
+    "id": "diabetes_dietary_management",
+    "title": "ADA Nutrition Guidelines for Diabetes Risk Reduction",
+    "content": "For individuals with prediabetes or diabetes, ADA recommend focusing on whole grains, non-starchy vegetables, legumes, and dairy products. Reducing glycemic load by avoiding refined sugars, sweetened beverages, and processed carbohydrates is proven to improve glycemic response and insulin sensitivity."
+  },
+  {
+    "id": "cardiovascular_diet",
+    "title": "AHA Dietary Guidelines for Heart Health",
+    "content": "The American Heart Association recommends a diet rich in fruits, vegetables, whole grains, healthy proteins (legumes, nuts, fish), and non-tropical liquid vegetable oils. Sodium intake should be restricted to under 2,300 mg per day (ideally 1,500 mg for hypertensive individuals) to reduce blood pressure."
+  },
+  {
+    "id": "physical_activity",
+    "title": "WHO Physical Activity Standards for Adults",
+    "content": "The World Health Organization recommends that adults engage in at least 150 to 300 minutes of moderate-intensity aerobic physical activity, or 75 to 150 minutes of vigorous-intensity aerobic physical activity per week. Muscle-strengthening exercises involving all major muscle groups should be performed 2 or more days a week."
+  },
+  {
+    "id": "insulin_resistance",
+    "title": "Clinical Guidelines on Insulin Levels and Resistance",
+    "content": "Fasting insulin levels under 10 mcU/mL are considered normal, though lower values (around 2-5 mcU/mL) are optimal. Elevated fasting insulin indicates insulin resistance, a key precursor to Type 2 diabetes. Lifestyle modifications including calorie restriction, aerobic exercise, and resistance training are key to reversing resistance."
+  },
+  {
+    "id": "weight_loss_benefits",
+    "title": "Clinical Outcomes of Weight Reduction",
+    "content": "Evidence-based clinical studies demonstrate that a modest weight loss of 5% to 10% of initial body weight is associated with clinically significant improvements in blood pressure, glycemic control, lipid profile (cholesterol and triglycerides), and general cardiovascular risk reduction."
+  },
+  {
+    "id": "age_metabolism",
+    "title": "Age-Related Metabolic and Glycemic Shifts",
+    "content": "With increasing age, muscle mass tends to decrease (sarcopenia) and abdominal fat deposition increases. This shifting body composition naturally leads to a progressive decline in insulin sensitivity and glucose tolerance, making active dietary regulation and regular strength training critical after age 45."
+  }
+]

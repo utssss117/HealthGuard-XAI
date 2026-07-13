@@ -27,6 +27,10 @@ from health_llm_assistant.prompt_builder import (
     build_conversation_history,
 )
 from health_llm_assistant.llm_interface import call_llm
+from health_llm_assistant.rag_retriever import ClinicalRAGRetriever
+
+# Initialize RAG retriever once globally for efficient reuse
+_RETRIEVER = ClinicalRAGRetriever()
 
 
 def ask(
@@ -35,7 +39,7 @@ def ask(
     conversation_history: Optional[List[Dict[str, str]]] = None,
 ) -> Dict[str, Any]:
     """
-    Process a user query in the context of a patient's health data.
+    Process a user query in the context of a patient's health data and relevant clinical guidelines.
 
     Parameters
     ----------
@@ -45,7 +49,7 @@ def ask(
 
     Returns
     -------
-    dict: {assistant_response, safety_flag, escalation_required}
+    dict: {assistant_response, safety_flag, escalation_required, retrieved_context}
     """
     # Step 1: Safety screening
     safety_result = check_safety(user_input)
@@ -55,14 +59,19 @@ def ask(
             "assistant_response": safety_result.redirection_message,
             "safety_flag": safety_result.safety_flag,
             "escalation_required": safety_result.escalation_required,
+            "retrieved_context": [],
         }
 
-    # Step 2: Build prompts
-    system_prompt = build_system_prompt(patient_data)
+    # Step 2: Retrieve clinical guidelines context (RAG)
+    matched_docs = _RETRIEVER.retrieve(user_input, top_k=2)
+    formatted_rag_context = _RETRIEVER.format_context_for_prompt(matched_docs) if matched_docs else None
+
+    # Step 3: Build prompts
+    system_prompt = build_system_prompt(patient_data, formatted_rag_context)
     history = build_conversation_history(conversation_history or [])
     history.append(build_user_message(user_input))
 
-    # Step 3: LLM call
+    # Step 4: LLM call
     response_text = call_llm(
         system_prompt=system_prompt,
         messages=history,
@@ -72,4 +81,5 @@ def ask(
         "assistant_response": response_text,
         "safety_flag": False,
         "escalation_required": False,
+        "retrieved_context": matched_docs,
     }

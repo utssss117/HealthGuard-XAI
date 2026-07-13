@@ -13,7 +13,11 @@ Scenarios:
 from __future__ import annotations
 
 import json
+import sys
+import io
 from typing import Any, Dict
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 from health_llm_assistant.assistant import ask
 

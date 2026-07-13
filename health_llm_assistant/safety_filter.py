@@ -41,7 +41,7 @@ _MEDICATION_PATTERNS: List[str] = [
     r"\bshould\s*i\s*take\b",
     r"\b(metformin|insulin|aspirin|atorvastatin|lisinopril|amlodipine|warfarin|ozempic|jardiance)\b",
     r"\b(antibiotic|statin|beta.?blocker|ace.?inhibitor|diuretic)\b",
-    r"\bstop\s*(taking|my)\b.{0,20}\b(medic|pill|tablet|drug)\b",
+    r"\bstop\s*(taking|my)\b.{0,30}\b(medic[a-z]*|pill|tablet|drug)\b",
 ]
 
 _DIAGNOSTIC_PATTERNS: List[str] = [
