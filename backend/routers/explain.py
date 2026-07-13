@@ -9,6 +9,7 @@ for a single patient instance.
 from __future__ import annotations
 
 import json
+import os
 import pandas as pd
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -29,7 +30,7 @@ _FEATURE_ORDER = [
 _explain_cache = {}
 MAX_CACHE_SIZE = 500
 
-import os
+
 
 def get_background_data(scaler, n_samples=50):
     try:
