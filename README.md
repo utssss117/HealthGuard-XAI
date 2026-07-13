@@ -9,9 +9,10 @@
   <img src="https://img.shields.io/badge/License-MIT-green" />
 </p>
 
-> **An end-to-end, production-grade Explainable AI system for probabilistic disease risk prediction, counterfactual health guidance, and LLM-powered health coaching — built in pure Python.**
+> **An end-to-end, production-grade Explainable AI system for probabilistic disease risk prediction, counterfactual health guidance, and LLM-powered health coaching — built with Next.js & FastAPI.**
 
-🌍 **Live Demo:** [healthguard-xai.streamlit.app](https://healthguard-xai-ht2rajyhy4app2wnym3cxtx.streamlit.app/)
+🌍 **Live Web App:** [health-guard-xai-i7ou.vercel.app](https://health-guard-xai-i7ou.vercel.app)
+🖥️ **Live Backend API:** [healthguard-xai.onrender.com](https://healthguard-xai.onrender.com)
 
 ---
 
