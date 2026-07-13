@@ -17,7 +17,11 @@ app.dependency_overrides[get_current_user] = lambda: {
     "last_name": "Patient"
 }
 
-client = TestClient(app)
+# Mock call_llm to prevent network API calls during tests and avoid missing GROQ_API_KEY errors
+import health_llm_assistant.assistant
+health_llm_assistant.assistant.call_llm = lambda system_prompt, messages: "Mocked AI Response: Safe and sound."
+
+client = TestClient(app, raise_server_exceptions=False)
 
 VALID_BIOMARKERS = {
     "Pregnancies": 2.0,
